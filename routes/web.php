@@ -1,14 +1,7 @@
 <?php
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
+默认路由配置
 */
 
 Route::get('/', function () {
@@ -18,6 +11,12 @@ Route::get('/', function () {
 
 /*
  *
+ 注意：路由的命中，跟路由的加载顺序也有关系:
+下面第二路由永远访问不到，需要把第二个路由移到上方，才能命中路由
+Route::get('/Wap/{post}','[控制器]@[行为]');
+Route::get('/Wap/ff','[控制器]@[行为]');
+
+
 Route::请求方式('路由'，路由回调)
 Route::get('/','[控制器]@[行为]');
 
@@ -64,21 +63,35 @@ Route::group(['prefix' => 'posts'], function () {
 {post}  =>实际是post模型的id
 Route::get('/posts/{post}','\app\Http\Controllers\PostController@show');
 function show(\app\Post $post){
+
 }
 
  * */
 
+//----------测试路由案例start----------
+
+
+Route::get('/test','\App\Http\Controllers\Test\PracticeController@viewtest');
+Route::get('/test/md','\App\Http\Controllers\Test\PracticeController@moreData');
+Route::get('/test/cr','\App\Http\Controllers\Test\PracticeController@compactRoute');
+
+//----------测试路由案例end----------
+
 
 //文章列表页
 Route::get('/posts','\App\Http\Controllers\PostController@index');
-//文章详情页
-Route::get('/posts/{post}','\App\Http\Controllers\PostController@show');
 //创建文章
 Route::get('/posts/create','\App\Http\Controllers\PostController@create');
 Route::post('/posts','\App\Http\Controllers\PostController@store');
+
+//文章详情页 实际路由url 传递是post表的id post指定的是模型绑定，绑定 app\post.php模型 对应的表名 posts
+Route::get('/posts/{post}','\App\Http\Controllers\PostController@show');
+
 
 //编辑文章
 Route::get('/posts/{post}/edit','\App\Http\Controllers\PostController@edit');
 Route::put('/posts/{post}','\App\Http\Controllers\PostController@update');
 //删除文章
 Route::get('posts/delete','\App\Http\Controllers\PostController@delete');
+//图片上传路由
+Route::post('/posts/image/upload','\App\Http\Controllers\PostController@imageUpload');

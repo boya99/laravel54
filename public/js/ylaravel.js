@@ -1,4 +1,5 @@
 $.ajaxSetup({
+    //设置请求头 csrf token 令牌配合 html中 meta标签csrf-token 使用
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
@@ -6,6 +7,7 @@ $.ajaxSetup({
 
 var editor = new wangEditor('content');
 if (editor.config){
+    //设置图片上传路由
     editor.config.uploadImgUrl = '/posts/image/upload';
 
     // 设置 headers（举例）

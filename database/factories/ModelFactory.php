@@ -10,7 +10,7 @@
 | database. Just tell the factory how a default model should look.
 |
 */
-
+//工厂模式：数据填充
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     static $password;
@@ -20,5 +20,17 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+    ];
+});
+
+$factory->define(App\Post::class, function (Faker\Generator $faker) {
+
+
+    return [
+//        数据填充需要6个单词
+        'title' => $faker->sentence(6),
+//        内容需要填充10句
+        'content' => $faker->paragraph(10),
+
     ];
 });

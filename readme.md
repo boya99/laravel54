@@ -1,51 +1,96 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## About Laravel 笔记：
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+ 
+# 1.修改.env 的mysql redis等相关配置 #
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# 2.进入项目执行 运行php项目程序 #
+     php artisan serve
+ 
+ 显示所有命令
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+     php artisan 
+ 
+       
+# 3. 其中 migrate:install安装 数据迁移 为数据迁移做备份 #
 
-## Learning Laravel
+      php artisan migrate:install
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+  创建 数据迁移表
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+       Create the migration repository 
+ 
 
-## Laravel Sponsors
+# 4 .创建控制器 #
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](http://patreon.com/taylorotwell):
+ php  创建postcontroller
 
-- **[Vehikl](http://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Styde](https://styde.net)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
+       php artisan make:controller PostController 
 
-## Contributing
+  
+# 5.创建表 #
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+ 创建数据表 使用migration  记录表语句
 
-## Security Vulnerabilities
+     1.php artisan make:migration create_posts_table （意思是：创建为posts的表）
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+     2.修改database/migrateions/新创建的表
 
-## License
+     3.php artisan migrate （通过php 执行 上述生成的文件，创建表名为 posts）
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+# 6.创建对应数据表模型文件 # 
+
+驼峰命名 默认情况下对应的表模型 都是去掉s的驼峰命名
+
+ 默认是在app目录下
+
+     php  artisan make:model Post
+ 
+tinker 一种命令行，可以用于测试创建的Post模型是否成功
+
+     php artisan tinker
+
+
+ 进入 命令行
+
+      1.new 对象 $post  = new \App\Post();
+
+     2.对象赋值 $post->title = '这是ceshi titiel222';
+
+     3.对象增加和修改 $post->save();
+
+
+通过主键取回一个模型
+
+     $flight = App\Flight::find(1);
+  
+取回符合查询限制的第一个模型.
+
+     $flight = App\Flight::where('active', 1)->first(); 
+
+ get()    返回对象数组
+ 
+ 型示例上调用 delete 方法来删除模型：
+
+     $flight = App\Flight::find(1);
+
+
+    $flight->delete();
+ 
+ 
+路径：config\app.php
+
+laravel 默认时区是UTC 修改 中国时区  Asia/Shanghai'
+
+ 
+ 
+
+    ps:测试数据快速填充  database\factories\ModelFactory.php 中  
+    数据填充插件 https://github.com/fzaninotto/Faker
+    1.新增一个Post的填充数据
+    2.控制台命令： php artisan tinker 进入 tinker控制台
+    命令：factory(App\Post::class,20)->make();   //是在命令行中直接显示20 个测试数据 
+    命令：factory(App\Post::class,20)->create();   //是直接创建20 个测试数据 `
+ 

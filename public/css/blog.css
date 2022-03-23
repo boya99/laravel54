@@ -29,7 +29,9 @@ h6, .h6 {
         width: 970px;
     }
 }
-
+a{
+    text-decoration: none;
+}
 
 /*
  * Masthead for nav
