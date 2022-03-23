@@ -1,11 +1,11 @@
 
-## About Laravel 笔记：
+#  About Laravel 笔记： #
 
 
  
-# 1.修改.env 的mysql redis等相关配置 #
+##  1.修改.env 的mysql redis等相关配置 ## 
 
-# 2.进入项目执行 运行php项目程序 #
+##  2.进入项目执行 运行php项目程序  ##
      php artisan serve
  
  显示所有命令
@@ -13,7 +13,7 @@
      php artisan 
  
        
-# 3. 其中 migrate:install安装 数据迁移 为数据迁移做备份 #
+ ## 3. 其中 migrate:install安装 数据迁移 为数据迁移做备份 ## 
 
       php artisan migrate:install
 
@@ -22,14 +22,14 @@
        Create the migration repository 
  
 
-# 4 .创建控制器 #
+ ## 4 .创建控制器  ##
 
  php  创建postcontroller
 
        php artisan make:controller PostController 
 
   
-# 5.创建表 #
+##  5.创建表  ##
 
  创建数据表 使用migration  记录表语句
 
@@ -40,7 +40,7 @@
      3.php artisan migrate （通过php 执行 上述生成的文件，创建表名为 posts）
 
 
-# 6.创建对应数据表模型文件 # 
+ ## 6.创建对应数据表模型文件  ## 
 
 驼峰命名 默认情况下对应的表模型 都是去掉s的驼峰命名
 
@@ -84,13 +84,5 @@ tinker 一种命令行，可以用于测试创建的Post模型是否成功
 
 laravel 默认时区是UTC 修改 中国时区  Asia/Shanghai'
 
- 
- 
+ps:其余零散笔记在node.txt中
 
-    ps:测试数据快速填充  database\factories\ModelFactory.php 中  
-    数据填充插件 https://github.com/fzaninotto/Faker
-    1.新增一个Post的填充数据
-    2.控制台命令： php artisan tinker 进入 tinker控制台
-    命令：factory(App\Post::class,20)->make();   //是在命令行中直接显示20 个测试数据 
-    命令：factory(App\Post::class,20)->create();   //是直接创建20 个测试数据 `
- 

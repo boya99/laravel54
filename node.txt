@@ -1,0 +1,22 @@
+ 图片上传位置 默认位置：laravel54/storage/app/public
+ 整个项目能访问的位置：laravel54/ public
+
+ 文件系统的配置文件位于 laravel54/config/filesystems.php
+
+ 为了能够让 图片上传位置 在 laravel54/ public 能够访问，
+
+ 默认情况下 filesystems.php 的default 的配置项为 local
+
+ 1.先将  config/filesystems.php  中的 default 的配置项有local驱动改为 public 驱动
+ 执行建立软连接命令：
+
+php artisan storage:link     //link 命令会找 config/filesystems.php 下的default 配置
+成功后，在项目根路径/ public 会看到storage 的软连接
+
+
+ps:测试数据快速填充  database\factories\ModelFactory.php 中
+重新define 一个 模型类      数据填充插件 https://github.com/fzaninotto/Faker
+1.新增一个Post的填充数据，仿照填写完成后
+2.控制台命令： php artisan tinker 进入 tinker控制台
+命令：factory(App\Post::class,20)->make();   //是在命令行中直接显示20 个测试数据
+命令：factory(App\Post::class,20)->create();   //是直接创建20 个测试数据

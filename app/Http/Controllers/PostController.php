@@ -76,6 +76,21 @@ class PostController extends Controller
 
 //    图片上传
     public function imageUpload(Request $request){
-        dd($request->all());
+        //file('上传文件名')获取文件
+        // storePublicly(自定义文件名方法)，自带扩展名，缺点不能指定目录
+//        $path = $request->file('wangEditorH5File')->storePublicly(md5(time()));
+
+
+//        storeAs('路径','文件名.扩展名');都要带上
+//        $path = $request->file('wangEditorH5File')->storeAs(
+//            'avatars',md5(time())
+//        );
+
+
+//        store('上传路径');   会自己生成唯一的id文件名
+        $path = $request->file('wangEditorH5File')->store('uploads');
+//        asset 来创建文件的 URL：
+        return asset('storage/'. $path);
+
     }
 }

@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+//    有local 改成public
+    'default' => env('FILESYSTEM_DRIVER', 'public'),
 
     /*
     |--------------------------------------------------------------------------
@@ -43,11 +44,12 @@ return [
 
     'disks' => [
 
+//        默认使用当前驱动, 会在找 storage/app下找配置
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-
+//希望找的 storage/app/public 下查找找
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
