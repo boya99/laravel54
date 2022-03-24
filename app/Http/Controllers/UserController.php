@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    //个人页面设置
+    //个人页面
     public function setting(){
-        return view('user/setting');
+        $title = '个人页面';
+        return view('user/setting',compact('title'));
     }
 
     //个人页面设置操作

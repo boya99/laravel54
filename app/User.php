@@ -2,28 +2,14 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
+use App\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 class User extends Authenticatable
 {
-    use Notifiable;
+//    不能继承 App/Model 只能自己手动添加
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    //允许通过数组注入的字段,需要指定，   白名单
     protected $fillable = [
-        'name', 'email', 'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
+        'name','email','password'
     ];
 }

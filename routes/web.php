@@ -87,7 +87,7 @@ Route::get('/login','\App\Http\Controllers\LoginController@index');
 //登录行为
 Route::post('/login','\App\Http\Controllers\LoginController@login');
 //登出行为
-Route::post('/logout','\App\Http\Controllers\LoginController@logout');
+Route::get('/logout','\App\Http\Controllers\LoginController@logout');
 //个人设置
 Route::get('/user/me/setting','\App\Http\Controllers\UserController@setting');
 //个人设置操作
