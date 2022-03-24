@@ -77,6 +77,24 @@ Route::get('/test/cr','\App\Http\Controllers\Test\PracticeController@compactRout
 
 //----------测试路由案例end----------
 
+//用户模块
+//用户注册页面
+Route::get('/register','\App\Http\Controllers\RegisterController@index');
+//用户注册行为
+Route::post('/register','\App\Http\Controllers\RegisterController@register');
+//登录页面
+Route::get('/login','\App\Http\Controllers\LoginController@index');
+//登录行为
+Route::post('/login','\App\Http\Controllers\LoginController@login');
+//登出行为
+Route::post('/logout','\App\Http\Controllers\LoginController@logout');
+//个人设置
+Route::get('/user/me/setting','\App\Http\Controllers\UserController@setting');
+//个人设置操作
+Route::post('/user/me/setting','\App\Http\Controllers\UserController@settingStore');
+
+
+
 
 //文章列表页
 Route::get('/posts','\App\Http\Controllers\PostController@index');
@@ -90,8 +108,9 @@ Route::get('/posts/{post}','\App\Http\Controllers\PostController@show');
 
 //编辑文章
 Route::get('/posts/{post}/edit','\App\Http\Controllers\PostController@edit');
+//编辑操作传递模型
 Route::put('/posts/{post}','\App\Http\Controllers\PostController@update');
-//删除文章
-Route::get('posts/delete','\App\Http\Controllers\PostController@delete');
+//删除文章 传递模型
+Route::get('posts/{post}/delete','\App\Http\Controllers\PostController@delete');
 //图片上传路由
 Route::post('/posts/image/upload','\App\Http\Controllers\PostController@imageUpload');

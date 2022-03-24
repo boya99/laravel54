@@ -60,18 +60,33 @@ class PostController extends Controller
         return redirect("/posts");
 //        dd($post);
     }
-    //编辑文章
-    public function edit(){
+    //编辑文章 传递模型
+    public function edit(Post $post){
         $title = '编辑文章';
-        return view('post/edit',compact('title'));
+        return view('post/edit',compact('title','post'));
     }
-    //编辑文章
-    public function update(){
+    //编辑文章 传递表单模型
+    public function update(Post $post){
+//       1.表单验证 有表单验证，页面就有$errors 实例
+        $this->validate(\request(),[
+            'title'=>'required|string|max:100|min:5',
+            'content'=>'required|string|min:5',
+        ]);
+        //逻辑操作
+        $post->title = \request('title');
+        $post->content = \request('content');
+        $post->save();//更新操作
+
+
+        //渲染
+        return redirect("/posts/{$post->id}");
 
     }
     //删除文章
-    public function delete(){
-
+    public function delete(Post $post){
+        //TODO 用户验证
+        $post->delete();
+        return redirect('/posts');
     }
 
 //    图片上传

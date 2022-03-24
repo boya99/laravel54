@@ -14,9 +14,35 @@ php artisan storage:link     //link 命令会找 config/filesystems.php 下的de
 成功后，在项目根路径/ public 会看到storage 的软连接
 
 
-ps:测试数据快速填充  database\factories\ModelFactory.php 中
+ps:测试数据快速填充 seed  database\factories\ModelFactory.php 中
 重新define 一个 模型类      数据填充插件 https://github.com/fzaninotto/Faker
 1.新增一个Post的填充数据，仿照填写完成后
 2.控制台命令： php artisan tinker 进入 tinker控制台
 命令：factory(App\Post::class,20)->make();   //是在命令行中直接显示20 个测试数据
 命令：factory(App\Post::class,20)->create();   //是直接创建20 个测试数据
+
+1，查看源composer config -g -l
+2，修改源：配置只在当前项目生效
+composer config repo.packagist composer https://mirrors.aliyun.com/composer/
+取消当前项目配置
+composer config --unset repos.packagist
+3，修改源：配置全局生效
+composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+取消全局配置
+composer config -g --unset repos.packagist
+
+命令行版本7.4，项目运行php7.1 出现问题：Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 7.3.0".
+将命令行的版本跟项目版本搞成一致。
+composer install --ignore-platform-reqs ： 安装 设置了忽略版本匹配
+composer update --ignore-platform-reqs     更新设置忽略版本匹配
+操作：
+1.删除： composer.lock 和  vendor
+2.修改  composer.json 的 config 配置项 增加
+
+ "platform-check": false  //不检查版本
+
+3.执行命令：
+ 1.composer clearcache  //清除缓存
+ 2.composer install --ignore-platform-reqs    //安装 设置了忽略版本匹配
+ 3.php artisan config:cache  //清除配置文件缓存。
+ 4.composer dump-autoload  //使用 dumpautoload 后会优先加载需要的类并提前返回
