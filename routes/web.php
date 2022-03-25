@@ -71,46 +71,51 @@ function show(\app\Post $post){
 //----------测试路由案例start----------
 
 
-Route::get('/test','\App\Http\Controllers\Test\PracticeController@viewtest');
-Route::get('/test/md','\App\Http\Controllers\Test\PracticeController@moreData');
-Route::get('/test/cr','\App\Http\Controllers\Test\PracticeController@compactRoute');
+Route::get('/test', 'Test\PracticeController@viewtest');
+Route::get('/test/md', 'Test\PracticeController@moreData');
+Route::get('/test/cr', 'Test\PracticeController@compactRoute');
 
 //----------测试路由案例end----------
 
 //用户模块
 //用户注册页面
-Route::get('/register','\App\Http\Controllers\RegisterController@index');
+Route::get('/register', '\App\Http\Controllers\RegisterController@index');
 //用户注册行为
-Route::post('/register','\App\Http\Controllers\RegisterController@register');
+Route::post('/register', '\App\Http\Controllers\RegisterController@register');
 //登录页面
-Route::get('/login','\App\Http\Controllers\LoginController@index');
+Route::get('/login', '\App\Http\Controllers\LoginController@index')->name('login');
 //登录行为
-Route::post('/login','\App\Http\Controllers\LoginController@login');
+Route::post('/login', '\App\Http\Controllers\LoginController@login');
+
+
+//路由分配中间件，可以在路由组中使用 middleware 键
+//使用 `Auth` 中间件 路由鉴权不成功，自动寻找login的路由，前提login是 命名的路由
+Route::group(['middleware' => 'auth:web'], function () {
 //登出行为
-Route::get('/logout','\App\Http\Controllers\LoginController@logout');
+    Route::get('/logout', '\App\Http\Controllers\LoginController@logout');
 //个人设置
-Route::get('/user/me/setting','\App\Http\Controllers\UserController@setting');
+    Route::get('/user/me/setting', '\App\Http\Controllers\UserController@setting');
 //个人设置操作
-Route::post('/user/me/setting','\App\Http\Controllers\UserController@settingStore');
+    Route::post('/user/me/setting', '\App\Http\Controllers\UserController@settingStore');
 
 
-
-
-//文章列表页
-Route::get('/posts','\App\Http\Controllers\PostController@index');
+//文章列表页 指定控制器，默认情况下是在app/Http/Controllers/寻找postController
+    Route::get('/posts', 'PostController@index');
 //创建文章
-Route::get('/posts/create','\App\Http\Controllers\PostController@create');
-Route::post('/posts','\App\Http\Controllers\PostController@store');
+    Route::get('/posts/create', 'PostController@create');
+    Route::post('/posts', '\App\Http\Controllers\PostController@store');
 
 //文章详情页 实际路由url 传递是post表的id post指定的是模型绑定，绑定 app\post.php模型 对应的表名 posts
-Route::get('/posts/{post}','\App\Http\Controllers\PostController@show');
+    Route::get('/posts/{post}', '\App\Http\Controllers\PostController@show');
 
 
 //编辑文章
-Route::get('/posts/{post}/edit','\App\Http\Controllers\PostController@edit');
+    Route::get('/posts/{post}/edit', '\App\Http\Controllers\PostController@edit');
 //编辑操作传递模型
-Route::put('/posts/{post}','\App\Http\Controllers\PostController@update');
+    Route::put('/posts/{post}', '\App\Http\Controllers\PostController@update');
 //删除文章 传递模型
-Route::get('posts/{post}/delete','\App\Http\Controllers\PostController@delete');
+    Route::get('posts/{post}/delete', '\App\Http\Controllers\PostController@delete');
 //图片上传路由
-Route::post('/posts/image/upload','\App\Http\Controllers\PostController@imageUpload');
+    Route::post('/posts/image/upload', '\App\Http\Controllers\PostController@imageUpload');
+});
+

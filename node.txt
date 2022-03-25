@@ -46,3 +46,138 @@ composer update --ignore-platform-reqs     更新设置忽略版本匹配
  2.composer install --ignore-platform-reqs    //安装 设置了忽略版本匹配
  3.php artisan config:cache  //清除配置文件缓存。
  4.composer dump-autoload  //使用 dumpautoload 后会优先加载需要的类并提前返回
+
+
+
+
+ 门脸类： 例如\Request::all();
+ 在config/app.php 中的 aliases
+
+Request $request 获取用户输入内容
+
+$request->all();  以 数组 形式获取到所有输入数据:
+$name = $request->input('name', 'Sally');  第二个参数传入一个默认值
+$name = $request->name;     也可以动态获取
+$input = $request->only(['username', 'password']);  仅能接收  'username', 'password'
+$input = $request->except(['credit_card']); 除了 credit_card 其他都能接收
+\request(['username', 'password'])  这是视频内容教的，也能获取
+
+数据验证 controller 里 $this->validate(请求实例对象,['验证字段'=>'要求1|要求2|'])
+验证失败会返回上一页中注册一个$errors的实例对象，进行验证
+
+数据增删改
+
+当 save 方法被调用时，created_at 以及 updated_at 时间戳将会被自动设置，因此我们不需要去手动设置它们
+增加插入 使用save()方法
+$flight = new Flight;
+$flight->name = $request->name;
+$flight->save();
+
+更新 也使用save()方法
+$flight = App\Flight::find(1);
+$flight->name = 'New Flight Name';
+$flight->save();
+
+批量更新：'active' = 1 并且 destination = 'San Diego' 修改成 'delayed' => 1
+App\Flight::where('active', 1)
+          ->where('destination', 'San Diego')
+          ->update(['delayed' => 1]);
+
+插入数据：create()
+$flight = App\Flight::create(['name' => 'zhangsan','age'=>18]);
+
+前提：Flight 模型上定义一个 fillable(允许批量增加的字段) 或 guarded(禁止增加的字段) 属性
+
+在flight模型中 添加： 不可被批量赋值的属性 price
+protected $guarded = ['price'];
+或者 protected $guarded = [];
+属性都可以被批量赋值，你应该定义 $guarded 为空数组。
+
+
+删除数据：先查再删
+$flight = App\Flight::find(1);
+$flight->delete();
+如果 知道 模型中的主键id，直接调用 destroy 方法
+App\Flight::destroy(1);
+App\Flight::destroy([1, 2, 3]);
+App\Flight::destroy(1, 2, 3);
+
+
+
+数据模型关联 例如：
+手机表 phones  字段有 user_id
+用户表 users  字段有 id
+phones关联users
+在 phone 模型中，增加 关联关系 user方法 表示关联user模型，users表
+
+一对一关联 hasOne 通过手机找单个用户
+public function user(){
+表示找App/user模型文件，phones 表中的user_id = users表中的id
+    return $this->hasOne('App\User','user_id','id');
+}
+一对多关联 hasMany 通过手机找多个用户
+public function user(){
+表示找App/user模型文件，phones 表中的user_id = users表中的id
+    return $this->hasMany('App\User','user_id','id');
+}
+
+
+
+反向关联 belongsTo 通过手机找用户
+public function user(){
+表示找App/user模型文件，phones 表中的user_id = users表中的id
+    return $this->belongsTo('App\User','user_id','id');
+}
+
+
+用户认证Auth 是指用户是否登录，登出
+
+ email 字段被取出，如果用户被找到了，数据库里经过哈希的密码将会与数组中哈希的 password 值比对，
+ 如果两个值一样的话就会开启一个通过认证的 session 给用户。
+如果认证成功，attempt 方法将会返回 true，反之则为 false。
+    $rember boolean 是否被记住 users 数据表一定要包含一个 remember_token 字段，这是用来保存「记住我」令牌的
+ if (Auth::attempt(['email' => $email, 'password' => $password],$rember)) {
+    //用户记住
+ }
+ //注销
+ Auth::logout();
+ //是否登录
+ Auth::check()
+
+ 鉴权策略使用 php artisan 命令
+对****模型进行鉴权
+ php artisan make:policy ****Policy
+
+ 生成 Policies 文件夹 内有 ****Policy.php 策略文件在其文件中修改例如：
+
+ 策略文件添加权限 是否有更改的权限
+ public function update(User $user,Post $post){
+     return $user->id == $post->user_id;
+ }
+ 是否有创建的权限，只传模型用户是否有权限创建
+ public function create(User $user)
+ {
+     //
+ }
+
+策略编写完成进行，策略注册 在Providers/AuthServiceProvider 包含了一个 policies 属性
+对 policise 属性进行编写
+protected $policies = [
+//     模型文件     =>指向鉴权模型
+      'App\Post' =>'App\Policies\PostPolicy',
+];
+
+//权限验证 $post是否有被用户update权限 用户的id = posts的user_id
+$this->authorize('update',$post);
+//权限验证 post是否有被用户create权限 属于这个用户就可以
+$this->authorize('create', Post::class);
+
+路由控制中，筛选需要权限的路由增加auth 中间件 middleware 使用auth 中间件
+指向config /auth     下default属性中的web
+Route::group(['middleware' => 'auth:web'], function () {
+//登出行为
+    Route::get('/logout', '\App\Http\Controllers\LoginController@logout');
+})
+
+
+

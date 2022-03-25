@@ -33,11 +33,13 @@
                 </div>
             </div>
             <div style="height: 20px;"></div>
-            <div>
+            <div class="content-main">
                 @foreach($posts as $post)
                 <div class="blog-post">
                     <h2 class="blog-post-title"><a href="/posts/{{$post->id}}" >{{$post->title}}</a></h2>
-                    <p class="blog-post-meta">{{$post->created_at}}<a href="/user/5">Kassandra Ankunding2</a></p>
+{{--                                                       $post->user->name  是找post表对应的user表的name--}}
+                    <p class="blog-post-meta"><span class="auth-time">{{$post->created_at}}</span>
+                        <span>作者：<a href="/user/{{$post->user->id}}">{{$post->user->name}}</a></span> </p>
                         {{-- 默认全部显示--}}
                         {{--<p>{{$post->content}}</p>--}}
                         {{-- 使用str_limit 限制内容长度，显示100字符，超出部分显示...           --}}

@@ -18,4 +18,13 @@ class Post extends Model
      * 所以从新写一个model,用来继承，可以一劳永逸
      */
 //    protected $fillable = ['title','content'];
+
+
+    //模型关联用户表user 一对一 文章模型关联
+    public function user(){
+//        默认情况下匹配 Post 模型的 user_id 至 User 模型的 id
+//        return $this->belongsTo('App\User');
+//        相当于 Post表的user_id字段 对应 user表中的id   一对一
+        return $this->belongsTo('App\User','user_id','id');
+    }
 }

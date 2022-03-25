@@ -4,26 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
     //登录页面
     public function index(){
+//        如果已经登录，直接跳转页面
+        if(Auth::check()){
+            return \redirect('/posts');
+        }
         return view('login/index');
     }
 //    登录行为
-    public function login(){
+    public function login(Request $request){
         //验证
-        $this->validate(\request(),[
+        $this->validate($request,[
             'email'=>'required|email',
             'password'=>'required',
             'is_remember'=>'integer'
         ]);
         //逻辑
-        $user = \request(['email','password']);
-        $is_remember = boolval(\request('is_remember')) ;
+        $user = $request->only(['email','password']);
+        $is_remember =  $request->input('is_remember') ;
 
+//        Log::info('aaa',['name'=>'zhangsa','age'=>18]);
     /*
 
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
@@ -45,6 +51,7 @@ class LoginController extends Controller
 //        if(Auth::attempt($user,$is_remember)){
 //            return redirect('/posts');
 //        }
+
 
         //渲染
         return Redirect::back()->withErrors('邮箱密码不匹配');

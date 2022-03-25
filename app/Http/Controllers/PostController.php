@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -43,18 +45,22 @@ class PostController extends Controller
 //        $post->save();
 
 //       1.表单验证 当验证失败的时候被重定向到原来的控制器层中，并且渲染了$errors 这个实例
-        $this->validate(\request(),[
+        $this->validate(Request(),[
             'title'=>'required|string|max:100|min:5',
             'content'=>'required|string|min:5',
         ]);
 
 
+        //用户是否有权限创建文章
+        $this->authorize('create',User::class);
 
+        $user_id = Auth::id();//用户id
         // 2.业务逻辑 Post模型提供create() 方法，参数是数组，也能添加
 //        $params = ['title'=>$info['title'],'content'=>$info['content']];
         //简写形式 跟上述一致，前提：字段名 跟数据表的字段名一致，且提交的参数名也一致
-        $params = \request(['title','content']);
-        $post = Post::create($params);
+        $params = Request(['title','content']);
+        $ar = array_merge($params,compact('user_id'));
+        $post = Post::create($ar);
 
 //      3.页面渲染或者路由重定向 到posts中
         return redirect("/posts");
@@ -72,6 +78,11 @@ class PostController extends Controller
             'title'=>'required|string|max:100|min:5',
             'content'=>'required|string|min:5',
         ]);
+
+        //权限验证 是否有update权限
+        $this->authorize('update',$post);
+//        $this->can('update',$post);
+
         //逻辑操作
         $post->title = \request('title');
         $post->content = \request('content');
@@ -85,7 +96,8 @@ class PostController extends Controller
     //删除文章
     public function delete(Post $post){
         //TODO 用户验证
-        $post->delete();
+        //权限验证 是否有delete权限
+        $this->authorize('delete',$post);
         return redirect('/posts');
     }
 

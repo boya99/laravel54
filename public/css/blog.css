@@ -141,6 +141,7 @@ a{
 
 .blog-post {
     margin-bottom: 60px;
+    padding-right: 50px;
 }
 .blog-post-title {
     margin-bottom: 5px;
@@ -169,4 +170,11 @@ p {
 }
 .blog-footer p:last-child {
     margin-bottom: 0;
+}
+
+.blog-post .auth-time{
+    float: right;
+}
+.content-main{
+    border: 1px solid #e3e3e3;
 }
