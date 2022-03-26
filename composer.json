@@ -6,9 +6,11 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "doctrine/dbal": "^3.3",
+        "doctrine/dbal": "^2.4",
         "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0"
+        "laravel/scout": "5.0.3",
+        "laravel/tinker": "~1.0",
+        "tamayo/laravel-scout-elastic": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
