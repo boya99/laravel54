@@ -46,7 +46,7 @@
                         {{-- {{}} 语句会自动调用 PHP 的 htmlspecialchars 函数防止 XSS 攻击。不想转义 可以使用  {!! $name !!}             --}}
                     <p>{!! str_limit($post->content,'150','...') !!}</p>
 
-                    <p class="blog-post-meta">赞 0  | 评论 {{$post->comments_count}}</p>
+                    <p class="blog-post-meta">赞 {{$post->zans_count}}    <span class="auth-time">评论 {{$post->comments_count}}</span></p>
                 </div>
                 @endforeach
 

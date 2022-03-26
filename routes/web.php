@@ -119,5 +119,9 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::post('/posts/image/upload', '\App\Http\Controllers\PostController@imageUpload');
 //    提交评论
     Route::post('/posts/{post}/comment', 'PostController@comment');
+//  点赞
+    Route::get('/posts/{post}/zan', 'PostController@zan');
+//    取消赞
+    Route::get('/posts/{post}/unzan', 'PostController@unzan');
 });
 

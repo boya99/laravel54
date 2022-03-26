@@ -42,4 +42,13 @@ class Post extends Model
 //
         return $this->hasMany('App\Comment','post_id','id')->orderBy('id','desc');
     }
+
+//  和用户进行关联   这篇文章，对这个用户是否有赞,参数为用户id,
+    public function zan($user_id){
+        return $this->hasOne(Zan::class)->where('user_id',$user_id);
+    }
+//    这篇文章所有的赞
+    public function zans(){
+        return $this->hasMany(Zan::class);
+    }
 }
