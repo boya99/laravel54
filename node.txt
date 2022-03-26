@@ -1,16 +1,17 @@
- 图片上传位置 默认位置：laravel54/storage/app/public
- 整个项目能访问的位置：laravel54/ public
+文件存储  文件系统配置文件位于 config/filesystems.php
+默认下，你只能访问public目录，但是文件上传默认位置上传 storage/app/public
+为了能通过网络访问，你需要创建 public/storage 到 storage/app/public 的符号链接。
 
- 文件系统的配置文件位于 laravel54/config/filesystems.php
+图片上传位置 默认位置：laravel54/storage/app/public
+整个项目能访问的位置：laravel54/public
+文件系统的配置文件位于 laravel54/config/filesystems.php
+为了能够让 图片上传位置 在 laravel54/ public 能够访问，
+默认情况下 filesystems.php 的default 的配置项为 local
 
- 为了能够让 图片上传位置 在 laravel54/ public 能够访问，
-
- 默认情况下 filesystems.php 的default 的配置项为 local
-
- 1.先将  config/filesystems.php  中的 default 的配置项有local驱动改为 public 驱动
- 执行建立软连接命令：
+1.先将  config/filesystems.php  中的 default 的配置项有local驱动改为 public 驱动执行建立软连接命令：
 
 php artisan storage:link     //link 命令会找 config/filesystems.php 下的default 配置
+
 成功后，在项目根路径/ public 会看到storage 的软连接
 
 
@@ -178,6 +179,23 @@ Route::group(['middleware' => 'auth:web'], function () {
 //登出行为
     Route::get('/logout', '\App\Http\Controllers\LoginController@logout');
 })
+
+
+//修改表字段使用 修改users表需要执行下列操作：
+1.php artisan make:migration alter_users_table
+
+2.database/migrations/下有新创建的文件，在其中的up方法下增加代码，修改users表增加头像字段
+if (Schema::hasTable('users')) {
+    Schema::table('users', function (Blueprint $table) {
+        $table->string('avatar',255)->default('')->comment('头像');
+    });
+}
+3.执行命令后，查看数据字段
+php artisan migrate
+
+
+
+
 
 
 

@@ -60,6 +60,6 @@ class LoginController extends Controller
     //登出行为
     public function logout(){
         \auth()->logout();
-        return redirect('/login');
+        return redirect('/');
     }
 }

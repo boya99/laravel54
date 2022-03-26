@@ -37,6 +37,12 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        //
+        //返回的值必须是 boolean 值，具体业务逻辑需要自行判断
+        if($user->id >1){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 }

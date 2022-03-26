@@ -11,23 +11,26 @@ class PostController extends Controller
 {
     //列表页
     public function index(){
+        $user = Auth::user();
         $title = '列表页';
 //        paginate 简单分页逻辑
         $posts = Post::orderBy('created_at','desc')->paginate(6);
 
-        return view('post/index',compact('title','posts'));
+        return view('post/index',compact('title','posts','user'));
     }
 
     //文章详情页 路由直接传递数据模型 参数是 post 模型
     public function show(Post $post){
         $title = '文章详情页';
-        return view('post/show',compact('title','post'));
+        $user = Auth::user();
+        return view('post/show',compact('title','post','user'));
     }
 
     //创建文章
     public function create(){
         $title = '创建文章';
-        return view('post/create' ,compact('title'));
+        $user = Auth::user();
+        return view('post/create' ,compact('title','user'));
     }
     //创建文章
     public function store(){
@@ -51,8 +54,8 @@ class PostController extends Controller
         ]);
 
 
-        //用户是否有权限创建文章
-        $this->authorize('create',User::class);
+        //验证是否具有修改的权限
+        $this->authorize('create',Post::class);
 
         $user_id = Auth::id();//用户id
         // 2.业务逻辑 Post模型提供create() 方法，参数是数组，也能添加
@@ -69,7 +72,8 @@ class PostController extends Controller
     //编辑文章 传递模型
     public function edit(Post $post){
         $title = '编辑文章';
-        return view('post/edit',compact('title','post'));
+        $user = Auth::user();
+        return view('post/edit',compact('title','post','user'));
     }
     //编辑文章 传递表单模型
     public function update(Post $post){
@@ -80,7 +84,9 @@ class PostController extends Controller
         ]);
 
         //权限验证 是否有update权限
-        $this->authorize('update',$post);
+         $this->authorize('update',$post);
+
+
 //        $this->can('update',$post);
 
         //逻辑操作
