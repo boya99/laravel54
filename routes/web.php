@@ -117,5 +117,7 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::get('posts/{post}/delete', '\App\Http\Controllers\PostController@delete');
 //图片上传路由
     Route::post('/posts/image/upload', '\App\Http\Controllers\PostController@imageUpload');
+//    提交评论
+    Route::post('/posts/{post}/comment', 'PostController@comment');
 });
 

@@ -172,7 +172,7 @@ p {
     margin-bottom: 0;
 }
 
-.blog-post .auth-time{
+.blog-post .auth-time,.list-group-item .auth-time{
     float: right;
 }
 .content-main{

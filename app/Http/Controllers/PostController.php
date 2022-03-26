@@ -2,19 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Post;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $user = Auth::user();
+
+    }
+
     //列表页
     public function index(){
         $user = Auth::user();
         $title = '列表页';
 //        paginate 简单分页逻辑
-        $posts = Post::orderBy('created_at','desc')->paginate(6);
+        $posts = Post::orderBy('created_at','desc')->withCount('comments')->paginate(6);
 
         return view('post/index',compact('title','posts','user'));
     }
@@ -22,8 +30,14 @@ class PostController extends Controller
     //文章详情页 路由直接传递数据模型 参数是 post 模型
     public function show(Post $post){
         $title = '文章详情页';
-        $user = Auth::user();
-        return view('post/show',compact('title','post','user'));
+
+//        $post->load('comments');//预加载 加载完控制器已读取数据，然后渲染模板。遵循mvc三层规则
+        $comments = $post->comments()->get();//当前文章模型关联 comments 模型的内容
+//        with是加载所有文章下的 的comments
+//        $comments2 = $post->with('comments')->get();
+
+        $post->load('comments');
+        return view('post/show',compact('title','post'));
     }
 
     //创建文章
@@ -126,4 +140,21 @@ class PostController extends Controller
         return asset('storage/'. $path);
 
     }
+
+
+    public function comment(Post $post){
+        $this->validate(\request(),[
+            'content'=>'required|min:2'
+        ]);
+        //逻辑
+
+        $comment = new Comment();//comment实例模型
+        $comment->user_id = Auth::id();
+        $comment->content = \request('content');//获取提交的content
+//        通过反向关联 写入关联模型 提交comment
+        $post->comments()->save($comment);//提交
+        //渲染
+        return back();
+    }
+
 }
