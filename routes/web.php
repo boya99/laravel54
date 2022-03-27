@@ -76,7 +76,7 @@ Route::get('/test/md', 'Test\PracticeController@moreData');
 Route::get('/test/cr', 'Test\PracticeController@compactRoute');
 
 //----------测试路由案例end----------
-
+//   路由有先后顺序，精准的路由在最前面
 //用户模块
 //用户注册页面
 Route::get('/register', '\App\Http\Controllers\RegisterController@index');
@@ -105,9 +105,10 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::get('/posts/create', 'PostController@create');
     Route::post('/posts', '\App\Http\Controllers\PostController@store');
 
+    //    搜索
+    Route::get('/posts/search', 'PostController@search');
 //文章详情页 实际路由url 传递是post表的id post指定的是模型绑定，绑定 app\post.php模型 对应的表名 posts
     Route::get('/posts/{post}', '\App\Http\Controllers\PostController@show');
-
 
 //编辑文章
     Route::get('/posts/{post}/edit', '\App\Http\Controllers\PostController@edit');
@@ -123,5 +124,7 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::get('/posts/{post}/zan', 'PostController@zan');
 //    取消赞
     Route::get('/posts/{post}/unzan', 'PostController@unzan');
+
+
 });
 

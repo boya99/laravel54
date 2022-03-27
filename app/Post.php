@@ -20,6 +20,7 @@ class Post extends Model
         return [
             'title'=>$this->title,
             'content'=>$this->content,
+            'created_at'=>$this->created_at,
         ];
     }
 

@@ -1,6 +1,7 @@
 
 <div class="blog-masthead">
     <div class="container">
+        <form action="/posts/search" >
         <ul class="nav navbar-nav navbar-left">
             <li>
                 <a class="blog-nav-item " href="/posts">首页</a>
@@ -18,7 +19,7 @@
                 <button class="btn btn-default" style="margin-top:10px" type="submit">Go!</button>
             </li>
         </ul>
-
+        </form>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <div>

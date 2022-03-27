@@ -184,6 +184,21 @@ class PostController extends Controller
         return back();
     }
 
+//  搜索结果页
+    public function search()
+    {
+        $title = '搜索结果页';
+        //验证
+        $this->validate(\request(),[
+            'query'=>'required'
+        ]);
+        //逻辑
+        $query = \request('query');
+//        $posts = Post::search($query)->get();
+        $posts = Post::search($query)->paginate(2);//使用分页
+        return \view('Post/search',compact('title','posts','query'));
+    }
+
 //  取消赞
     public function unzan(Post $post)
     {
