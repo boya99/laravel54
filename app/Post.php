@@ -3,9 +3,27 @@
 namespace App;
 
 use App\Model;
+use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
+//    使用scout 下的searchable   符合scout的规范
+    use Searchable;
+    //定义索引里面的type 相当于定义一个表
+    public function searchableAs()
+    {
+        return "post";
+    }
+//    定义有哪些字段需要搜索
+    public function toSearchableArray()
+    {
+        return [
+            'title'=>$this->title,
+            'content'=>$this->content,
+        ];
+    }
+
+
     //默认 post对应的数据表就是posts
     //如果没有对应需要手动指定 $table 表名是 my_flights
    //    protected $table = 'my_flights';
