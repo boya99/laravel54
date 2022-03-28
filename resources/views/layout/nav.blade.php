@@ -29,7 +29,7 @@
 {{--                       可以直接使用Auth::user() 对象实例  --}}
                        aria-haspopup="true" aria-expanded="false">{{\Auth::User()->name}}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/user/5">我的主页</a></li>
+                        <li><a href="/user/{{\Illuminate\Support\Facades\Auth::user()->id}}">我的主页</a></li>
                         <li><a href="/user/me/setting">个人设置</a></li>
                         <li><a href="/logout">登出</a></li>
                     </ul>

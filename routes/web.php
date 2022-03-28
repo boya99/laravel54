@@ -125,6 +125,11 @@ Route::group(['middleware' => 'auth:web'], function () {
 //    取消赞
     Route::get('/posts/{post}/unzan', 'PostController@unzan');
 
-
+// 个人中心
+    Route::get('/user/{user}','UserController@show');
+//    粉操作
+    Route::post('/user/{user}/fan','UserController@fan');
+//    取消粉的操作
+    Route::post('/user/{user}/unfan','UserController@unfan');
 });
 
