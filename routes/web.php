@@ -131,5 +131,10 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::post('/user/{user}/fan','UserController@fan');
 //    取消粉的操作
     Route::post('/user/{user}/unfan','UserController@unfan');
+
+//    专题详情页
+    Route::get('/topic/{topic}','TopicController@show');
+//    投稿行为
+    Route::post('/topic/{topic}/submit','TopicController@submit');
 });
 
