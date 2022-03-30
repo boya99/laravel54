@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Scout\Searchable;
 
 class Post extends Model
@@ -69,5 +70,25 @@ class Post extends Model
 //    这篇文章所有的赞
     public function zans(){
         return $this->hasMany(Zan::class);
+    }
+
+
+    //    属于某个作者的文章  属于不属于的 scopeAuthorBy 特有语法 必须scope开头
+    public function scopeAuthorBy(Builder $query, $user_id)
+    {
+
+        return $query->where('user_id', $user_id);
+    }
+
+    public function postTopics(){
+        return $this->hasMany(Topic::class,'post_id','id');
+    }
+//    不属于某个专题的文章
+    public function scopeTopicNotBy(Builder $query, $topic_id)
+    {
+//        doesntHave:不属于  postTopics  上方的关联模型   and 并且  回调方法   use($topic_id) 匿名函数传递外部参数
+        return $query->doesntHave('postTopics','and',function($q) use($topic_id){
+            $q->where('topic_id',$topic_id);
+        });
     }
 }

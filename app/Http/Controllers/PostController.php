@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Comment;
 use App\Post;
+use App\Topic;
 use App\User;
 use App\Zan;
+
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -16,6 +19,7 @@ class PostController extends Controller
     {
         $user = Auth::user();
 
+
     }
 
     //列表页
@@ -24,7 +28,7 @@ class PostController extends Controller
         $user = Auth::user();
         $title = '列表页';
 //        paginate 简单分页逻辑    withCount(['a','b'])  a,b 统计多个，a,b指的是 模型中关联的方法
-        $posts = Post::orderBy('created_at', 'desc')->withCount(['comments','zans'])->paginate(6);
+        $posts = Post::orderBy('created_at', 'desc')->withCount(['comments', 'zans'])->paginate(6);
 
         return view('post/index', compact('title', 'posts', 'user'));
     }
@@ -189,14 +193,14 @@ class PostController extends Controller
     {
         $title = '搜索结果页';
         //验证
-        $this->validate(\request(),[
-            'query'=>'required'
+        $this->validate(\request(), [
+            'query' => 'required'
         ]);
         //逻辑
         $query = \request('query');
 //        $posts = Post::search($query)->get();
         $posts = Post::search($query)->paginate(2);//使用分页
-        return \view('Post/search',compact('title','posts','query'));
+        return \view('Post/search', compact('title', 'posts', 'query'));
     }
 
 //  取消赞
@@ -207,4 +211,7 @@ class PostController extends Controller
 
         return back();
     }
+
+
+
 }
