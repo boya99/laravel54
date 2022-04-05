@@ -138,3 +138,5 @@ Route::group(['middleware' => 'auth:web'], function () {
     Route::post('/topic/{topic}/submit','TopicController@submit');
 });
 
+include_once('admin.php');
+

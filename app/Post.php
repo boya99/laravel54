@@ -80,8 +80,9 @@ class Post extends Model
         return $query->where('user_id', $user_id);
     }
 
+//    一篇文章对应多个专题关联关系  一对多
     public function postTopics(){
-        return $this->hasMany(Topic::class,'post_id','id');
+        return $this->hasMany('App\PostTopic','post_id','id');
     }
 //    不属于某个专题的文章
     public function scopeTopicNotBy(Builder $query, $topic_id)
