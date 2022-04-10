@@ -33,13 +33,17 @@ return [
     | mechanisms used by this application to persist your user's data.
     |
     | Supported: "session", "token"
-    |
+    | 自定义守卫
     */
 
     'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+        'admin'=>[
+            'driver' => 'session',
+            'provider' => 'admins', //下面代码定义的provider
         ],
 
         'api' => [
@@ -71,10 +75,11 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+//        自定义后台用户权限管理,使用AdminUsers表
+         'admins' => [
+             'driver' => 'eloquent',
+             'model' => App\AdminUsers::class,
+         ],
     ],
 
     /*

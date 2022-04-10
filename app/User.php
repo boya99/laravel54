@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Model;
+//用户权限继承
 use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
