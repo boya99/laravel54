@@ -431,6 +431,83 @@ php artisan scout:import "App\Post"   //带命名空间
 http://127.0.0.1:9200/laravel54/post/42   //laravel54表示查询哪个索引 post查找的类型，42就是id
 //测试通过 post模型添加的数据自动输入es中
 ```
+8. windows 运行
+```
+cd elasticsearch/bin
 
+elasticsearch.bat
+```
 ## admin 后台模板使用 adminlte
 `composer require "almasaeed2010/adminlte=~2.0"`
+
+
+## 模型scope 方法使用：
+laravel中在模板中处理(属于不属于)的数据(增删改查),引入了scope来处理
+
+也就是在模板定义方法中,加上前缀scope。
+
+简言之，Laravel中模型中可以定义scope开头方法，这类方法可以通过模型直接调用。这类方法也称作查询作用域。
+aravel中要求在定义的方法scope后面跟的字母要大写(小驼峰命名法)
+```
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    /**
+     * Scope a query to only include popular users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePopular($query)
+    {
+        return $query->where('votes', '>', 100);
+    }
+
+    /**
+     * Scope a query to only include active users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
+}
+
+```
+
+后面那我们去控制器进行处理数据
+在控制器中使用:去除scope前缀,首字母变小写调用就好啦.
+
+定义范围后，可以在查询模型时调用范围方法。但是，scope调用方法时不应包含前缀。您甚至可以将调用链接到各种范围，例如：
+```
+$users = App\User::popular()->active()->orderBy('created_at')->get();
+```
+
+通过or查询运算符组合多个Eloquent模型范围可能需要使用Closure回调：
+
+```
+$users = App\User::popular()->orWhere(function (Builder $query) {
+    $query->active();
+})->get();
+```
+ 
+但是由于这可能很麻烦，Laravel提供了一种“更高阶” orWhere方法，允许您在不使用闭包的情况下流畅地将这些范围链接在一起：
+
+```
+$users = App\User::popular()->orWhere->active()->get();
+```
+
+我们需要重新定义 boot 方法，集成父类 boot 以后，添加全局 scope，这样默认就已经全局使用了。
+
+那么，我们有的时候有的查询是不需要这个全局 scope 的时候怎么办呢？去掉就可以
+```
+$posts = Post::withOutGlobalScope('avaiable')->orderBy('created_at','desc')->paginate(10);
+```
+ 

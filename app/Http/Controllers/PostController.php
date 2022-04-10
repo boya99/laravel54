@@ -40,7 +40,7 @@ class PostController extends Controller
 
 //        $post->load('comments');//预加载 加载完控制器已读取数据，然后渲染模板。遵循mvc三层规则
         $comments = $post->comments()->get();//当前文章模型关联 comments 模型的内容
-//        with是加载所有文章下的 的comments
+//        with是加载所有文章模型下的 的comments方法
 //        $comments2 = $post->with('comments')->get();
 
         $post->load('comments');

@@ -13,6 +13,16 @@ Route::group(['prefix'=>'admin'],function(){
     Route::group(['middleware'=>'auth:admin'],function(){
         //后台首页
         Route::get('/home','\App\Admin\Controllers\HomeController@index');
+        //管理人员模块
+        Route::get('/users','\App\Admin\Controllers\UserController@index');
+        //管理员添加页面
+        Route::get('/users/create','\App\Admin\Controllers\UserController@create');
+        //管理员添加操作
+        Route::post('/users/store','\App\Admin\Controllers\UserController@store');
+
+        //审核模块
+        Route::get('/posts','\App\Admin\Controllers\PostController@index');
+        Route::post('/posts/{post}/status','\App\Admin\Controllers\PostController@status');
     });
 
 });
