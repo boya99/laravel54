@@ -111,8 +111,6 @@ class Post extends Model
 
     $posts = Post::withOutGlobalScope('avaiable')->orderBy('created_at','desc')->paginate(10);
 
-
-
      * */
     protected static function boot(){
         parent::boot();

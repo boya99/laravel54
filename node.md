@@ -510,4 +510,4 @@ $users = App\User::popular()->orWhere->active()->get();
 ```
 $posts = Post::withOutGlobalScope('avaiable')->orderBy('created_at','desc')->paginate(10);
 ```
- 
+**一对多 可以不用创建关联关系表，但是多对多，需要创建关联关系表，关联关系表无需创建model 模型**
