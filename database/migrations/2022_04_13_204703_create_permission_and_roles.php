@@ -50,7 +50,7 @@ class CreatePermissionAndRoles extends Migration
                 $table->timestamps();
 
             });
-            DB::statement("ALTER TABLE `admin_permissions` COMMENT '权限角色表'");
+            DB::statement("ALTER TABLE `admin_permission_role` COMMENT '权限角色表'");
         }
         //用户角色表
         if(!Schema::hasTable('admin_role_user')){
@@ -62,7 +62,7 @@ class CreatePermissionAndRoles extends Migration
                 $table->timestamps();
 
             });
-            DB::statement("ALTER TABLE `admin_permissions` COMMENT '用户角色表'");
+            DB::statement("ALTER TABLE `admin_role_user` COMMENT '用户角色表'");
         }
     }
 

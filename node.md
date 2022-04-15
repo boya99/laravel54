@@ -207,6 +207,39 @@ public function user(){
 多态多对多 morphToMany   (文章/视频-标签)  一个标签可以给文章用，也可以给视频用，也可以多个文章多个视频用标签
 注意关联模型时：一对多，以及 反向关联中 外键主键定义位置不同：重点难点！！！！！！！
 ```
+**多对多**
+```
+用户有哪些角色  多对多关系，使用belongsToMany 在adminuser模型中添加：
+    public function roles(){
+//        参数1 'App\AdminRole' 要多对多的目标类   参数2 'admin_role_user' 两者中间关系表
+//        参数3  'user_id' 中间关系表中跟当前model的外键  参数4 'role_id' 中间关系表中跟目标model的外键
+        return $this->belongsToMany(
+            'App\AdminRole',
+            'admin_role_user',
+            'user_id',
+//            关系表中的user_id role_id取出来
+            'role_id')->withPivot(['user_id','role_id']);
+    }
+```
+## 使用model模型中的方法时有2中情况
+```
+多对多关系中：
+有一下2种情况：
+
+$this->roles  和 $this->roles() 区别
+
+加了括号：返回的是模型关联对象    不加括号返回的是模型关联结果集
+```
+ 
+
+
+
+
+
+
+
+
+
 
 用户认证Auth 是指用户是否登录，登出
 
@@ -433,7 +466,8 @@ http://127.0.0.1:9200/laravel54/post/42   //laravel54表示查询哪个索引 po
 ```
 8. windows 运行
 ```
-cd elasticsearch/bin
+cd elasticsearch/bin 
+cd D:\360安全浏览器下载\elasticsearch-rtf-master
 
 elasticsearch.bat
 ```
@@ -511,3 +545,4 @@ $users = App\User::popular()->orWhere->active()->get();
 $posts = Post::withOutGlobalScope('avaiable')->orderBy('created_at','desc')->paginate(10);
 ```
 **一对多 可以不用创建关联关系表，但是多对多，需要创建关联关系表，关联关系表无需创建model 模型**
+
