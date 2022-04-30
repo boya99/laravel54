@@ -19,6 +19,29 @@ Route::group(['prefix'=>'admin'],function(){
         Route::get('/users/create','\App\Admin\Controllers\UserController@create');
         //管理员添加操作
         Route::post('/users/store','\App\Admin\Controllers\UserController@store');
+        //用户展示角色页面
+        Route::get('/users/{user}/role','\App\Admin\Controllers\UserController@role');
+        //用户添加角色操作
+        Route::post('/users/{user}/role','\App\Admin\Controllers\UserController@storeRole');
+
+        //角色展示页面
+        Route::get('/roles','\App\Admin\Controllers\RoleController@index');
+        //角色创建页面
+        Route::get('/roles/create','\App\Admin\Controllers\RoleController@create');
+        //角色创建操作
+        Route::post('/roles/store','\App\Admin\Controllers\RoleController@store');
+        //角色权限页面
+        Route::get('/roles/{role}/permission','\App\Admin\Controllers\RoleController@permission');
+        //角色权限修改
+        Route::post('/roles/{role}/permission','\App\Admin\Controllers\RoleController@storePermission');
+
+        //权限展示页面
+        Route::get('/permissions','\App\Admin\Controllers\PermissionController@index');
+        //权限创建页面
+        Route::get('/permissions/create','\App\Admin\Controllers\PermissionController@create');
+        //权限创建操作
+        Route::post('/permissions/store','\App\Admin\Controllers\PermissionController@store');
+
 
         //审核模块
         Route::get('/posts','\App\Admin\Controllers\PostController@index');
