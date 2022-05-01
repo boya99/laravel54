@@ -4,9 +4,9 @@
 默认路由配置
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', function () {
+    return view('welcome');
+});
 
 
 /*

@@ -12,7 +12,7 @@ class AdminRole extends Model
     public function permissions()
     {
         return $this->belongsToMany(
-            'App\AdminPermissions',
+            'App\AdminPermission',
             'admin_permission_role',
             'role_id',
             'permission_id'
