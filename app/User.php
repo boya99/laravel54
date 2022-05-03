@@ -51,4 +51,15 @@ class User extends Authenticatable
         return $this->stars()->where('star_id',$uid)->count();
     }
 
+
+    //后台通知功能 用户收到的通知  多对多关系  1个用户多个通知，一个通知多个用户
+    public function notices(){
+        return $this->belongsToMany(Notice::class,'user_notice','user_id','notice_id')
+            ->withPivot(['user_id','notice_id']);
+    }
+
+    //给用户增加通知
+    public function addNotice($notice){
+        return $this->notices()->save($notice);//删除使用 detach
+    }
 }

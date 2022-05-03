@@ -62,4 +62,8 @@ class LoginController extends Controller
         \auth()->logout();
         return redirect('/');
     }
+
+    public function welcome(){
+        return redirect('/login');
+    }
 }

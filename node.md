@@ -546,3 +546,78 @@ $posts = Post::withOutGlobalScope('avaiable')->orderBy('created_at','desc')->pag
 ```
 **一对多 可以不用创建关联关系表，但是多对多，需要创建关联关系表，关联关系表无需创建model 模型**
 
+
+### laravel 优化方法：
+## 1.自带优化方法
+```
+## 优化1：路由缓存  php artisan route:cache  路径：bootstrap/cache/
+        路由缓存清空    php artisan route:clear
+
+## 优化2：配置缓存  php artisan config:cache  路径：bootstrap/cache/
+         配置缓存清空  php artisan config:clear
+
+## 优化3：优化类加载  php artisan optimize  路径：vender/composer/
+        优化类加载清空  php artisan clear-compiled
+
+```
+
+## 2.Laravel框架开发调试工具Laravel Debugbar使用
+``` 
+安装教程
+https://blog.csdn.net/h330531987/article/details/79088413
+使用debugbar 调试无法检测到ajax 调用
+```
+
+## 3.页面比较慢，一般使用联合查询，未进行预加载 使用 预加载方式2中方式  with 和 load
+
+```
+    // with()使用 关联user表 （视图层foreach循环时 遍历查询user表，所以需要优化）
+    public function index()
+    {
+        $user = Auth::user();
+        $title = '列表页';
+        $posts = Post::orderBy('created_at', 'desc')->withCount(['comments', 'zans'])->with('user')->paginate(6);
+
+        return view('post/index', compact('title', 'posts', 'user'));
+    }
+
+    // load()使用 关联 user表   （视图层foreach循环时 遍历查询user表，所以需要优化）
+    public function index()
+    {
+        $user = Auth::user();
+        $title = '列表页';
+        $posts = Post::orderBy('created_at', 'desc')->withCount(['comments', 'zans'])->paginate(6);
+        $posts->load('user');
+        return view('post/index', compact('title', 'posts', 'user'));
+    }
+
+```
+
+## 4.慢sql的查询 \DB:listen()  只要进行sql 操作都会监听
+```$xslt
+1.注册  app\Providers\AppServiceProvider.php
+
+
+    public function boot()
+    {
+        //启动前
+        Schema::defaultStringLength(191);
+
+//        公共页面传值 使用view::composer('模板','回调方法')
+        View::composer('layout.sidebar',function($view){
+            $topics = Topic::all();
+            $view->with('topics',$topics);
+        });
+        //使用DB::listen 打印到日志 time 毫秒
+        \DB::listen(function($query){
+            $sql= $query->sql;
+            $bindings = $query->bindings;
+            $time = $query->time;
+           if($time > 10){//大于10 毫秒的才打印
+                //log 日志路径： storage\logs\laravel.log
+               \Log::debug(var_export(compact('sql','bindings','time'),true));
+           }
+
+        });
+    }
+```

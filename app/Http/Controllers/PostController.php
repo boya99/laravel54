@@ -28,8 +28,9 @@ class PostController extends Controller
         $user = Auth::user();
         $title = '列表页';
 //        paginate 简单分页逻辑    withCount(['a','b'])  a,b 统计多个，a,b指的是 模型中关联的方法
+//        $posts = Post::orderBy('created_at', 'desc')->withCount(['comments', 'zans'])->with('user')->paginate(6);
         $posts = Post::orderBy('created_at', 'desc')->withCount(['comments', 'zans'])->paginate(6);
-
+        $posts->load('user');
         return view('post/index', compact('title', 'posts', 'user'));
     }
 
